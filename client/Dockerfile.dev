@@ -1,0 +1,16 @@
+FROM node
+
+RUN mkdir -p /home/node/app/client && chown -R node:node /home/node/app
+
+USER node
+WORKDIR /home/node/app/client
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["yarn", "start"]

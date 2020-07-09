@@ -1,0 +1,16 @@
+FROM node
+
+RUN mkdir -p /home/node/app/server && chown -R node:node /home/node/app
+
+USER node
+WORKDIR /home/node/app/server
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["npm", "run", "dev"]

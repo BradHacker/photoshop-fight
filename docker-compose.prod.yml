@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  web:
+    container_name: pf-web
+    build: .
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'

@@ -1,0 +1,1 @@
+bin/reset && bin/build-dev && bin/dev

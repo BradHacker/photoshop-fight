@@ -1,0 +1,13 @@
+$red: #dd0200;
+$light-blue: #bbdeff;
+$dark-blue: #00053e;
+$accent-blue: #0400b1;
+
+body,
+html,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: $dark-blue;
+}
