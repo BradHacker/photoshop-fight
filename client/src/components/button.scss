@@ -1,0 +1,42 @@
+@import '../colors.scss';
+
+.button {
+  background-color: $primary;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  color: black;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  display: inline-block;
+  margin: 0.5rem;
+  min-width: 64px;
+  height: 36px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+}
+
+.button:hover {
+  // background-color: mix($primary, #fff, 96%);
+  background-color: mix($primary, white, 70%);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 1);
+  // transform: scale(1.03);
+}
+
+.button-text {
+  background-color: transparent;
+  color: $primary;
+  box-shadow: none;
+}
+
+.button-text:hover {
+  background-color: transparentize($primary, 0.8);
+  // box-shadow: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+}

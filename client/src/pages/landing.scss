@@ -1,0 +1,127 @@
+@import '../colors.scss';
+// @import '../fonts.scss';
+
+.landing-container::-webkit-scrollbar {
+  display: none;
+}
+
+.landing-container {
+  width: 100%;
+  height: 100%;
+  overflow: overlay;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .landing-nav {
+    height: 3rem;
+
+    .logo {
+      height: 2.5rem;
+      margin-right: auto;
+    }
+
+    .user-pfp {
+      margin-left: 0;
+    }
+  }
+
+  .hero-container {
+    width: 100%;
+    min-height: calc(100% - 4rem);
+    padding: 0 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
+
+    .logo {
+      width: 30%;
+      opacity: 0;
+      animation: fadein 1s linear 0.5s 1 normal forwards;
+    }
+
+    .app-title {
+      .headline1 {
+        margin: 0.5rem;
+      }
+
+      .photoshop {
+        color: $primary;
+        font-family: 'Ayuthaya';
+        opacity: 0;
+        animation: fadein 0.5s linear 1s 1 normal forwards;
+      }
+
+      .fight {
+        color: $red;
+        font-family: 'Frankenweenie';
+        opacity: 0;
+        animation: fadein 0.5s linear 1.5s 1 normal forwards;
+      }
+
+      .tagline {
+        color: white;
+        opacity: 0;
+        animation: fadein 0.5s linear 2s 1 normal forwards;
+      }
+    }
+
+    .scroll {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      color: white;
+
+      .fa-chevron-down {
+        margin-right: 1rem;
+        animation: bounce 1s;
+        animation-delay: 3s;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes bounce {
+        0% {
+          transform: translateY(0rem);
+        }
+        25% {
+          transform: translateY(0.3rem);
+        }
+        100% {
+          transform: translateY(0rem);
+        }
+      }
+    }
+  }
+
+  .works-container {
+    text-align: center;
+
+    .headline4 {
+      color: white;
+    }
+  }
+
+  .get-started-container {
+    padding: 0 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .buttons {
+      display: flex;
+    }
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

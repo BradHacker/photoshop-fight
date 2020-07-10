@@ -1,0 +1,48 @@
+@use 'sass:map';
+
+$red: #dd0200;
+$light-blue: #bbdeff;
+$dark-blue: #00053e;
+$accent-blue: #0400b1;
+
+// https://material.io/resources/color/#!/?view.left=1&view.right=0&primary.color=bbdeff&secondary.color=ffdcbb
+
+$primary: #bbdeff;
+$primary-bg: mix($primary, #121212, 8%);
+$primary-light: #eeffff;
+$primary-dark: #8aaccc;
+$secondary: #ffdcbb;
+$secondary-light: #ffffee;
+$secondary-dark: #cbaa8b;
+$error: #cf6679;
+$success: #00c851;
+
+$surface-levels: (
+  '0': 0%,
+  '1': 5%,
+  '2': 7%,
+  '3': 8%,
+  '4': 9%,
+  '6': 11%,
+  '8': 12%,
+  '12': 14%,
+  '16': 15%,
+  '24': 16%,
+);
+
+// @debug map.get($surface-levels, '0');
+
+@each $level, $percent in $surface-levels {
+  .surface-#{$level} {
+    background-color: mix($primary-bg, #fff, 100% - $percent);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  }
+
+  .surface-#{$level}-flat {
+    background-color: mix($primary-bg, #fff, 100% - $percent);
+  }
+}
+
+@function surface($level) {
+  @return mix($primary-bg, #fff, 100% - map-get($surface-levels, $level));
+}
