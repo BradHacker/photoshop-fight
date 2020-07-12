@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 import User from '../assets/user.png';
 import './nav.scss';
 
-const Nav = ({ user, collapsed }) => (
-  <nav className="nav">
+const Nav = ({ user, variant, children }) => (
+  <nav className={`nav ${variant === 'solid' ? 'surface-1' : ''}`}>
     <Link to="/">
       <img src={Logo} className="logo surface-1" alt="Logo" />
     </Link>
-    <img src={User} className="user-pfp surface-1" alt="Profile" />
+    {children}
+    <img src={(user && user.image) || User} className="user-pfp" alt="Profile" />
   </nav>
 );
 

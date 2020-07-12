@@ -12,10 +12,10 @@ const Landing = () => {
     <div className="landing-container">
       <nav className="landing-nav surface-0-flat">
         <img src={Logo} className="logo surface-1" alt="logo" />
-        <Button to={user ? '/dashboard' : '/login'} variant="text">
-          {user ? 'Dashboard' : 'Login'}
+        <Button to={user.hashid ? '/dashboard' : '/login'} variant="text">
+          {user.hashid ? 'Dashboard' : 'Login'}
         </Button>
-        {user ? <img src={User} className="user-pfp surface-1" alt="Profile" /> : <Button to="/signup">Sign Up</Button>}
+        {user.hashid ? <img src={User} className="user-pfp surface-1" alt="Profile" /> : <Button to="/signup">Sign Up</Button>}
       </nav>
       <div className="container hero-container surface-0-flat">
         <img src={Logo} className="logo surface-1" alt="logo" />
@@ -37,10 +37,10 @@ const Landing = () => {
         <p className="headline4">4) Win</p>
       </div>
       <div className="container get-started-container surface-0-flat">
-        <p className="headline2">{user ? 'Go to your Dashboard' : 'Get Started Today!'}</p>
+        <p className="headline2">{user.hashid ? 'Go to your Dashboard' : 'Get Started Today!'}</p>
         <div className="buttons">
-          <Button to={user ? '/dashboard' : '/signup'}>{user ? 'Dashboard' : 'Sign Up'}</Button>
-          {!user && (
+          <Button to={user.hashid ? '/dashboard' : '/signup'}>{user.hashid ? 'Dashboard' : 'Sign Up'}</Button>
+          {!user.hashid && (
             <Button to="/login" variant="text">
               Login
             </Button>

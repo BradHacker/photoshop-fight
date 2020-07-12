@@ -30,19 +30,36 @@ $surface-levels: (
   '24': 16%,
 );
 
+$surface-numbers: (
+  0: '0',
+  1: '1',
+  2: '2',
+  3: '3',
+  4: '4',
+  6: '6',
+  8: '8',
+  12: '12',
+  16: '16',
+  24: '24',
+);
+
 // @debug map.get($surface-levels, '0');
 
 @each $level, $percent in $surface-levels {
   .surface-#{$level} {
-    background-color: mix($primary-bg, #fff, 100% - $percent);
+    background-color: mix($primary-bg, #fff, 100% - $percent) !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
   }
 
   .surface-#{$level}-flat {
-    background-color: mix($primary-bg, #fff, 100% - $percent);
+    background-color: mix($primary-bg, #fff, 100% - $percent) !important;
   }
 }
 
 @function surface($level) {
-  @return mix($primary-bg, #fff, 100% - map-get($surface-levels, $level));
+  $surface-level: $level;
+  @if type-of($level) == 'number' {
+    $surface-level: map-get($surface-numbers, $level);
+  }
+  @return mix($primary-bg, #fff, 100% - map-get($surface-levels, $surface-level));
 }

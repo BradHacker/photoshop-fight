@@ -10,6 +10,7 @@ import './App.scss';
 import Login from './pages/login';
 import Home from './pages/home';
 import Landing from './pages/landing';
+import Fight from './pages/fight';
 
 export default class App extends React.Component {
   constructor() {
@@ -45,6 +46,8 @@ export default class App extends React.Component {
         <Router history={history}>
           <div className="app-container surface-0">
             <Switch>
+              <Route path="/fights/:action/:id" component={Fight} />
+              <Route path="/fights/:action" component={Fight} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={(props) => <Login formType="signup" {...props} />} />
               <Route path="/dashboard" component={Home} />

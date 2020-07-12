@@ -7,8 +7,9 @@ const UserRouter = express.Router();
 
 UserRouter.get('/me', (req, res) => {
   if (!req.user) return res.status(401).send();
-  let user = req.user;
+  let user = { ...req.user._doc };
   delete user.password;
+  delete user._id;
   return res.status(200).json(user);
 });
 

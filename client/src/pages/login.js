@@ -55,6 +55,7 @@ export default class Login extends React.Component {
       lastName: '',
       username: '',
       password: '',
+      error: undefined,
     });
     history.push(`/${formType === 'login' ? 'signup' : 'login'}`);
   }

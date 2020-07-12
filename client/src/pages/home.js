@@ -23,7 +23,7 @@ export default class Home extends React.Component {
         <Nav user={user} />
         <div className="container home-container">
           <Card className="user-card">
-            <img src={User} className="user-pfp surface-0-flat" alt="Profile" />
+            <img src={User} className="user-pfp" alt="Profile" />
             <p className="username headline4">{user.username}</p>
             <p className="name subtitle1">
               aka. {user.firstName} {user.lastName}

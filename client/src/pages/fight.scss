@@ -1,0 +1,131 @@
+@import '../colors.scss';
+
+.fight-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  .new-modal-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparentize(#000000, 0.5);
+    animation: fadein 0.5s;
+    animation-fill-mode: forwards;
+
+    .new-modal {
+      width: 50%;
+      position: relative;
+
+      .headline5 {
+        margin: 1rem 0.5rem;
+      }
+
+      .fa-times {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        cursor: pointer;
+      }
+
+      .buttons {
+        width: 100%;
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  .fight-title {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    border-bottom: 1px transparentize($primary, 0.5) solid;
+    border-top: 1px transparentize($primary, 0.5) solid;
+  }
+
+  .compete-container,
+  .view-container {
+    width: 100%;
+    height: calc(100% - 3rem);
+  }
+
+  .main {
+    width: 100%;
+    height: calc(100% - 3rem);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .viewers-container {
+      height: 100%;
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+
+      .viewers-title {
+        width: 100%;
+        height: 2rem;
+        padding: 0.5rem 0.75rem;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 500;
+        box-sizing: border-box;
+        display: flex;
+        border-bottom: 1px transparentize(white, 0.8) solid;
+
+        .caps {
+          display: inline-block;
+          letter-spacing: 0.1rem;
+          margin-right: auto;
+        }
+
+        .viewer-count {
+          display: inline-block;
+          flex-grow: 1;
+          text-align: right;
+        }
+      }
+
+      .viewer-list {
+        overflow-y: scroll;
+        width: 100%;
+        flex-grow: 1;
+
+        .viewer {
+          width: 100%;
+          height: 3rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.5rem;
+          box-sizing: border-box;
+
+          .viewer-pfp {
+            width: 2rem;
+            height: 2rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
