@@ -43,7 +43,7 @@ export default class Home extends React.Component {
               <span className="number headline4">42.3k</span>
             </div>
           </Card>
-          <ActionButton to="/fights/new" />
+          <ActionButton to={`${user.hashid}/fights/new`} />
         </div>
       </>
     );

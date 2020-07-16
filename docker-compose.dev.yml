@@ -15,6 +15,7 @@ services:
       - server
       - mongo
     stdin_open: true
+    env_file: ./client/.env
   server:
     container_name: pf-server
     build:

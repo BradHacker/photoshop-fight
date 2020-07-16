@@ -1,11 +1,14 @@
 import './fight.scss';
 
 import React from 'react';
+import io from 'socket.io-client';
 import Nav from '../components/nav';
 import UserContext from '../user-context';
 import Card from '../components/card';
 import Button from '../components/button';
 import User from '../assets/user.png';
+import PreRound from '../components/pre-round';
+import api from '../api';
 
 export default class Fight extends React.Component {
   static contextType = UserContext;
@@ -15,6 +18,7 @@ export default class Fight extends React.Component {
 
     const { params } = props.match;
     this.state = {
+      userid: params.userid || '',
       action: params.action || 'new',
       fightId: params.id,
       fight: {
@@ -23,23 +27,50 @@ export default class Fight extends React.Component {
         competitorCount: 2,
         roundDuration: 15,
         roundCount: 3,
+        state: 'pre-round',
+        ready: true,
+        currentRound: 1,
       },
       showViewers: true,
+      ready: false,
+      socket: undefined,
     };
 
     this.onFightName = this.onFightName.bind(this);
     this.onCompetitorCount = this.onCompetitorCount.bind(this);
     this.onRoundDuration = this.onRoundDuration.bind(this);
     this.onRoundCount = this.onRoundCount.bind(this);
+    this.toggleReady = this.toggleReady.bind(this);
+    this.onNewFightSubmit = this.onNewFightSubmit.bind(this);
   }
 
   componentDidMount() {
-    const { action } = this.state;
-    if (action === 'view') {
-      // TODO: Add socket code to connect viewer
-    }
-    if (action === 'compete') {
-      // TODO: Add socket code to connect competitor
+    const { action, userid } = this.state,
+      { params } = this.props.match;
+
+    if (action !== 'new') {
+      const socket = io();
+      this.setState({ socket });
+
+      socket.on('connect', () => {
+        console.log('trying to join fight');
+        if (userid)
+          socket.emit(
+            action === 'compete' ? 'join_fight' : 'view_fight',
+            {
+              fightId: params.id,
+              userId: userid,
+            },
+            (data) => {
+              if (data.success) return this.setState({ fight: data.fight });
+              console.log(data);
+            }
+          );
+        else console.error('No UserId found');
+      });
+
+      socket.on('message', (data) => console.log(data));
+      console.log(params.id ? `Current fight id: ${params.id}` : "Couldn't find fight id!");
     }
   }
 
@@ -71,9 +102,36 @@ export default class Fight extends React.Component {
     this.setState({ fight: { ...fight } });
   }
 
+  toggleReady() {
+    const { ready } = this.state;
+    this.setState({ ready: !ready });
+  }
+
+  onNewFightSubmit(e) {
+    e.preventDefault();
+
+    const { fight, userid } = this.state;
+
+    api
+      .post('/fights/new', { ...fight })
+      .then((response) => response.json())
+      .then(
+        (response) => {
+          window.location.href = `${userid}/fights/compete/${response.fight.hashid}`;
+        },
+        (err) => console.error(err)
+      );
+  }
+
   render() {
-    const { action, fight, showViewers } = this.state;
+    const { action, fight, showViewers, ready, socket } = this.state;
     const user = this.context;
+
+    if (!socket && user.hashid) {
+      console.log('render user', user);
+      // this.connectWebSocket();
+    }
+
     return (
       <div className="fight-container">
         <Nav variant="solid" />
@@ -82,7 +140,7 @@ export default class Fight extends React.Component {
             <Card className="new-modal">
               <i className="fa fa-times" />
               <p className="headline5">New Fight</p>
-              <form className="form-fluid">
+              <form className="form-fluid" onSubmit={this.onNewFightSubmit}>
                 <div className="form-group">
                   <label htmlFor="fightName" className="headline6">
                     Fight Name
@@ -128,7 +186,7 @@ export default class Fight extends React.Component {
                   </select>
                 </div>
                 <div className="buttons">
-                  <Button onClick={() => console.log("it's working")}>Create</Button>
+                  <Button type="submit">Create</Button>
                   <Button variant="text">Cancel</Button>
                 </div>
               </form>
@@ -154,6 +212,14 @@ export default class Fight extends React.Component {
                     </div>
                   </div>
                 </div>
+              )}
+              {fight.state === 'pre-round' && (
+                <PreRound
+                  competing={action === 'compete'}
+                  ready={ready}
+                  onReady={this.toggleReady}
+                  roundNum={fight.currentRound}
+                />
               )}
             </div>
           </div>

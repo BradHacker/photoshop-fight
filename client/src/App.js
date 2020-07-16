@@ -46,8 +46,8 @@ export default class App extends React.Component {
         <Router history={history}>
           <div className="app-container surface-0">
             <Switch>
-              <Route path="/fights/:action/:id" component={Fight} />
-              <Route path="/fights/:action" component={Fight} />
+              <Route path="/:userid/fights/:action/:id" component={Fight} />
+              <Route path="/:userid/fights/:action" component={Fight} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={(props) => <Login formType="signup" {...props} />} />
               <Route path="/dashboard" component={Home} />
