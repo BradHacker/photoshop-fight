@@ -34,6 +34,8 @@ export default class Fight extends React.Component {
       showViewers: true,
       ready: false,
       socket: undefined,
+      latency: '?',
+      connection: 'connecting',
     };
 
     this.onFightName = this.onFightName.bind(this);
@@ -49,11 +51,12 @@ export default class Fight extends React.Component {
       { params } = this.props.match;
 
     if (action !== 'new') {
-      const socket = io();
+      const socket = io({
+        reconnectionAttempts: 20,
+      });
       this.setState({ socket });
 
       socket.on('connect', () => {
-        console.log('trying to join fight');
         if (userid)
           socket.emit(
             action === 'compete' ? 'join_fight' : 'view_fight',
@@ -62,14 +65,34 @@ export default class Fight extends React.Component {
               userId: userid,
             },
             (data) => {
-              if (data.success) return this.setState({ fight: data.fight });
-              console.log(data);
+              if (data.success) return this.setState({ fight: data.fight, connection: 'connected' });
+              this.setState({ connection: 'failed ' });
             }
           );
         else console.error('No UserId found');
       });
 
-      socket.on('message', (data) => console.log(data));
+      socket.on('competitors_update', (data) => {
+        const { fight } = this.state;
+        fight.competitors = [...data.competitors];
+        this.setState({ fight });
+      });
+
+      socket.on('competitor_leave', (data) => {
+        const { fight } = this.state;
+        let competitorIndex = fight.competitors.map((c) => c.socketId).indexOf(data.socketId);
+        fight.competitors.splice(competitorIndex, 1);
+        this.setState({ fight });
+      });
+
+      socket.on('reconnecting', (attempt) => this.setState({ connection: 'connecting', latency: '?' }));
+
+      socket.on('reconnect_failed', () => this.setState({ connection: 'failed', latency: '?' }));
+      socket.on('connect_error', () => this.setState({ connection: 'failed', latency: '?' }));
+      socket.on('connect_timeout', () => this.setState({ connection: 'failed', latency: '?' }));
+
+      socket.on('pong', (latency) => this.setState({ latency }));
+
       console.log(params.id ? `Current fight id: ${params.id}` : "Couldn't find fight id!");
     }
   }
@@ -103,8 +126,14 @@ export default class Fight extends React.Component {
   }
 
   toggleReady() {
-    const { ready } = this.state;
-    this.setState({ ready: !ready });
+    const { ready, socket, fight } = this.state,
+      { hashid } = this.context;
+    socket.emit('competitor_ready', { userId: hashid, ready: !ready }, (data) => {
+      if (data.error) return console.error(data.error);
+      fight.competitors = [...data.competitors];
+      this.setState({ ready: !ready, fight });
+    });
+    // this.setState({ ready: !ready });
   }
 
   onNewFightSubmit(e) {
@@ -117,20 +146,15 @@ export default class Fight extends React.Component {
       .then((response) => response.json())
       .then(
         (response) => {
-          window.location.href = `${userid}/fights/compete/${response.fight.hashid}`;
+          window.location.href = `/${userid}/fights/compete/${response.fight.hashid}`;
         },
         (err) => console.error(err)
       );
   }
 
   render() {
-    const { action, fight, showViewers, ready, socket } = this.state;
-    const user = this.context;
-
-    if (!socket && user.hashid) {
-      console.log('render user', user);
-      // this.connectWebSocket();
-    }
+    const { action, fight, showViewers, connection, latency } = this.state;
+    const contextUser = this.context;
 
     return (
       <div className="fight-container">
@@ -196,7 +220,29 @@ export default class Fight extends React.Component {
         {(action === 'compete' || action === 'view') && (
           <div className={`${action}-container`}>
             <div className="fight-title surface-1-flat">
-              <p className="headline6">{fight.name || 'Unitled Fight'}</p>
+              <div className="headline6">
+                {fight ? fight.name : ''}
+                <div className={`connection-container ${connection}`}>
+                  {connection === 'connected' && <i className="fa fa-check" />}
+                  {connection === 'failed' && <i className="fa fa-times" />}
+                  {connection === 'connecting' && <i className="fa fa-circle-notch fa-spin" />}
+                  {connection} ({latency} ms)
+                </div>
+              </div>
+              <div className="competitors-container">
+                {fight.competitors &&
+                  fight.competitors.map((competitor) => (
+                    <div key={competitor.user.hashid} className="competitor">
+                      <img src={User} className="competitor-pfp" alt={competitor.user.username} />
+                      <div className="competitor-name-container">
+                        <p className={`competitor-name ${competitor.ready ? 'ready' : ''}`}>{competitor.user.username}</p>
+                        <p className={`competitor-ready ${competitor.ready ? 'ready' : ''}`}>
+                          {competitor.ready ? 'Ready' : 'Not Ready'}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
             <div className="main">
               {showViewers && (
@@ -216,7 +262,9 @@ export default class Fight extends React.Component {
               {fight.state === 'pre-round' && (
                 <PreRound
                   competing={action === 'compete'}
-                  ready={ready}
+                  ready={
+                    fight.competitors ? fight.competitors.filter((c) => c.user.hashid === contextUser.hashid)[0].ready : false
+                  }
                   onReady={this.toggleReady}
                   roundNum={fight.currentRound}
                 />

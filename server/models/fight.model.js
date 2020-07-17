@@ -5,12 +5,23 @@ const HashId = require('../util/hashids');
 const FightSchema = new mongoose.Schema({
   hashid: { type: String },
   name: { type: String, required: true },
-  competitors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+  competitors: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+      socketId: { type: String },
+      ready: { type: Boolean, default: false },
+    },
+  ],
   competitorLimit: { type: Number, required: true, default: 2 },
   roundDuration: { type: Number, required: true, default: 15 },
   roundCount: { type: Number, required: true, default: 3 },
   roundWinners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
-  viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+  viewers: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+      socketId: { type: String },
+    },
+  ],
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
   state: {
     type: String,

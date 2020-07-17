@@ -41,6 +41,7 @@ export default class App extends React.Component {
 
   render() {
     const { user } = this.state;
+    // if (user) console.log(user);
     return (
       <UserContext.Provider value={user}>
         <Router history={history}>

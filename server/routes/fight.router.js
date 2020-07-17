@@ -16,7 +16,6 @@ FightRouter.post('/new', (req, res) => {
   Fight.create(
     {
       name: req.body.name,
-      competitors: [req.user._id],
       competitorLimit: req.body.competitorLimit,
       roundDuration: req.body.roundDuration,
       roundCount: req.body.roundCount,
