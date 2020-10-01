@@ -31,3 +31,6 @@ client/!.yarn/plugins
 client/!.yarn/sdks
 client/!.yarn/versions
 client/.pnp.*
+
+# weird macos files
+._*
