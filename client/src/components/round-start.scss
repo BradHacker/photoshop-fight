@@ -1,0 +1,29 @@
+.round-start-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+
+  .round-header {
+    height: 12rem;
+
+    .round-title {
+      margin: 1rem;
+    }
+
+    .ready-prompt {
+      color: white;
+    }
+  }
+
+  .round-body {
+    height: calc(100% - 12rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
