@@ -1,20 +1,22 @@
 @import '../colors.scss';
 
 .login-container {
-  width: 30%;
+  width: 80%;
   max-height: 100%;
   align-self: center;
   margin-top: auto;
   margin-bottom: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  justify-content: space-evenly;
+  overflow-y: overlay;
+  box-sizing: border-box;
 
   .logo {
-    width: 80%;
-    margin-bottom: 1rem;
+    width: 40%;
+    max-width: 20rem;
+    margin: 1rem;
     box-shadow: 0 0 10px 0 #000;
   }
 
@@ -44,12 +46,13 @@
   }
 
   .form-fluid {
+    // max-width: 20rem;
     transition: all 0.5s ease-in-out;
     overflow: hidden;
   }
 
   .collapsed {
-    max-height: 0%;
+    max-width: 0%;
     // animation: collapse 1s;
     // animation-fill-mode: forwards;
     overflow: hidden;
@@ -57,7 +60,7 @@
 
   .open {
     transition-delay: 0.5s;
-    max-height: 70%;
+    max-width: 30rem;
     // animation: open 1s;
     // animation-delay: 1s;
     // animation-fill-mode: forwards;
@@ -66,10 +69,10 @@
 
   @keyframes collapse {
     from {
-      max-height: 70%;
+      max-width: 30rem;
     }
     to {
-      max-height: 0%;
+      max-width: 0%;
     }
   }
 
@@ -78,7 +81,7 @@
       max-height: 0%;
     }
     to {
-      max-height: 70%;
+      max-height: 30rem;
     }
   }
 }
