@@ -22,8 +22,15 @@
       width: 50%;
       position: relative;
 
-      .headline5 {
+      .headline5,
+      .error {
         margin: 1rem 0.5rem;
+      }
+
+      .error {
+        color: $error;
+        font-size: 0.8rem;
+        margin-bottom: 0;
       }
 
       .fa-times {
@@ -52,6 +59,36 @@
     border-bottom: 1px transparentize($primary, 0.5) solid;
     border-top: 1px transparentize($primary, 0.5) solid;
     box-sizing: border-box;
+
+    .headline6 {
+      margin-right: 0.5rem;
+    }
+
+    .fight-details {
+      display: flex;
+      align-items: center;
+    }
+
+    .copy-btn {
+      transition: all 0.35s ease-in-out;
+      width: 6rem;
+      margin: 0;
+    }
+
+    .copy-icon-btn {
+      margin: 0;
+    }
+
+    .copy-success {
+      color: black;
+      background-color: $primary-light;
+      width: 7rem;
+    }
+
+    .view-fight:hover,
+    .view-fight:focus {
+      color: white;
+    }
 
     .connection-container {
       font-size: 0.5rem;
@@ -89,15 +126,12 @@
         }
 
         .competitor-name-container {
-          color: surface(24);
+          // color: surface(24);
+          color: white;
 
           p {
             margin: 0;
-            transition: color 0.15s ease-in-out;
-          }
-
-          .ready {
-            color: white;
+            transition: color 0.2s ease-in-out;
           }
 
           // .competitor-name {
@@ -106,6 +140,11 @@
 
           .competitor-ready {
             font-size: 0.5rem;
+            color: $error;
+          }
+
+          .competitor-ready.ready {
+            color: $success;
           }
         }
       }
@@ -157,7 +196,7 @@
       }
 
       .viewer-list {
-        overflow-y: scroll;
+        overflow-y: overlay;
         width: 100%;
         flex-grow: 1;
 
@@ -175,6 +214,11 @@
             height: 2rem;
           }
         }
+
+        .no-viewers {
+          color: transparentize(white, 0.7);
+          justify-content: center;
+        }
       }
     }
   }
@@ -186,5 +230,45 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+.redirecting {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .dot1,
+  .dot2,
+  .dot3 {
+    animation: jump 0.8s;
+    animation-iteration-count: infinite;
+    display: inline-block;
+  }
+
+  .dot1 {
+    animation-delay: 0s;
+  }
+
+  .dot2 {
+    animation-delay: 0.2s;
+  }
+
+  .dot3 {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes jump {
+    0%,
+    40%,
+    60%,
+    100% {
+      transform: initial;
+    }
+    50% {
+      transform: translateY(0.25rem);
+    }
   }
 }
