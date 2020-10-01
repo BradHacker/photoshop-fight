@@ -1,5 +1,6 @@
 const express = require('express');
 const { Fight } = require('../models/fight.model');
+const { HashId } = require('../util/hashids');
 
 const FightRouter = express.Router();
 
@@ -12,7 +13,7 @@ FightRouter.get('/', (req, res) => {
 });
 
 FightRouter.post('/new', (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   Fight.create(
     {
       name: req.body.name,
@@ -24,6 +25,19 @@ FightRouter.post('/new', (req, res) => {
     (err, fight) => {
       if (err) return res.status(400).send({ success: false, error: { ...err } });
       return res.status(201).send({ success: true, fight });
+    }
+  );
+});
+
+FightRouter.post('/:id/image', (req, res, next) => {
+  Fight.findByIdAndUpdate(
+    HashId.decodeHex(req.params.id),
+    {
+      $push: { imageSuggestions: req.body.image },
+    },
+    (err, fight) => {
+      if (err) return res.status(400).send({ success: false, error: { ...err } });
+      return res.status(201).send({ success: true });
     }
   );
 });

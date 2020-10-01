@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { UserSchema } = require('./user.model');
-const HashId = require('../util/hashids');
+const { HashId, fightActionEncode } = require('../util/hashids');
 
 const FightSchema = new mongoose.Schema({
   hashid: { type: String },
@@ -10,10 +10,11 @@ const FightSchema = new mongoose.Schema({
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
       socketId: { type: String },
       ready: { type: Boolean, default: false },
+      stateDone: { type: Boolean, default: false },
     },
   ],
   competitorLimit: { type: Number, required: true, default: 2 },
-  roundDuration: { type: Number, required: true, default: 15 },
+  roundDuration: { type: Number, required: true, default: 15 * 60 },
   roundCount: { type: Number, required: true, default: 3 },
   roundWinners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
   viewers: [
@@ -26,9 +27,11 @@ const FightSchema = new mongoose.Schema({
   state: {
     type: String,
     required: true,
-    enum: ['round-start', 'round-in-progress', 'post-round', 'pre-round', 'fight-end'],
+    enum: ['pre-round', 'round-start', 'round-in-progress', 'post-round', 'fight-end'],
     default: 'pre-round',
   },
+  stateBeginTime: { type: Date },
+  stateLength: { type: Number },
   currentRound: { type: Number, required: true, default: 1 },
   roundImages: [
     {
@@ -43,10 +46,16 @@ const FightSchema = new mongoose.Schema({
       },
     },
   ],
+  imageSuggestions: [{ type: String }],
+  competeUrl: { type: String },
+  viewUrl: { type: String },
 });
 
 FightSchema.pre('save', function (next) {
+  // console.log('validatingggggg');
   if (!this.hashid) this.hashid = HashId.encodeHex(this._id.toString());
+  if (!this.competeUrl) this.competeUrl = `/f/${fightActionEncode('compete', this.hashid)}`;
+  if (!this.viewUrl) this.viewUrl = `/f/${fightActionEncode('view', this.hashid)}`;
   // if (this.isNew && this.roundWinners.length === 0) this.roundWinners = undefined;
   // console.log(this.roundWinners);
   next();

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
-const HashId = require('../util/hashids');
+const { HashId } = require('../util/hashids');
 
 const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },

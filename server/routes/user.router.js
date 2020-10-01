@@ -2,15 +2,20 @@ const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt-nodejs');
 const { User } = require('../models/user.model');
+const { Fight } = require('../models/fight.model');
 
 const UserRouter = express.Router();
 
 UserRouter.get('/me', (req, res) => {
   if (!req.user) return res.status(401).send();
   let user = { ...req.user._doc };
-  delete user.password;
-  delete user._id;
-  return res.status(200).json(user);
+  Fight.find({ createdBy: user._id }, { hashid: 1, name: 1, state: 1 }, (err, fights) => {
+    // console.log(fights);
+    delete user.password;
+    delete user._id;
+    user.fights = fights;
+    return res.status(200).json(user);
+  });
 });
 
 UserRouter.post('/register', (req, res) => {
