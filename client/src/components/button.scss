@@ -20,6 +20,10 @@
   justify-content: center;
   outline: none;
   border: none;
+
+  i {
+    margin-right: 0.25rem;
+  }
 }
 
 .button:hover {
@@ -29,14 +33,26 @@
   // transform: scale(1.03);
 }
 
-.button-text {
+.button-text,
+.button-icon {
   background-color: transparent;
   color: $primary;
   box-shadow: none;
 }
 
-.button-text:hover {
+.button-text:hover,
+.button-icon:hover {
   background-color: transparentize($primary, 0.8);
   // box-shadow: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+}
+
+.button-icon {
+  min-width: 0;
+  width: 2.5rem;
+  padding: 0 0.25rem;
+
+  i {
+    margin: 0;
+  }
 }
