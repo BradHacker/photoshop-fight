@@ -55,6 +55,33 @@
   }
 }
 
-.actions {
-  width: 25%;
+::-webkit-scrollbar {
+  background: transparent;
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: surface(24);
+  border-radius: 0.25rem;
+}
+
+.my-fights {
+  width: 42.5%;
+
+  .fight-list {
+    max-height: 10rem;
+    overflow-y: scroll;
+  }
+
+  .fight {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem 0;
+  }
+
+  .fight:not(:first-of-type) {
+    border-top: 1px solid surface(24);
+  }
 }
