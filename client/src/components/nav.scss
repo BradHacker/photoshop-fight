@@ -16,10 +16,13 @@ nav {
     height: 2.5rem;
   }
 
+  a:first-of-type {
+    margin-right: auto;
+  }
+
   .user-pfp {
     height: 2.5rem;
     border-radius: 1.25rem;
-    margin-left: auto;
     background-color: $secondary;
   }
 }
