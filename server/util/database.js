@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 
 const mongooseOptions = {
   useCreateIndex: true,
